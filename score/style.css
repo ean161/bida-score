@@ -1,0 +1,315 @@
+:root {
+    --color-score: 255 255 255;
+    --color-team-blue: 52 152 219;
+    --color-team-red: 231 76 60;
+}
+
+@keyframes marquee {
+    0% {
+        text-shadow: 0 0 0 rgb(255 255 255 / 0), 0 0 0 rgb(255 255 255 / 0);
+        transform: translate(0, -100%) rotate(5deg);
+    }
+
+    25% {
+        text-shadow: 0 0.1em 0 rgb(var(--color-score) / 0.75), 0 0.2em 0 rgb(var(--color-score) / 0.5);
+        transform: translate(0, 100%) rotate(-5deg);
+    }
+
+    50% {
+        text-shadow: 0 -0.1em 0 rgb(var(--color-score) / 0.75), 0 -0.2em 0 rgb(var(--color-score) / 0.5);
+        transform: translate(0, 0) rotate(5deg);
+    }
+
+    75% {
+        text-shadow: 0 0.1em 0 rgb(var(--color-score) / 0.75), 0 0.2em 0 rgb(var(--color-score) / 0.5);
+        transform: translate(0, 100%) rotate(-5deg);
+    }
+
+    100% {
+        text-shadow: 0 0 0 rgb(255 255 255 / 0), 0 0 0 rgb(255 255 255 / 0);
+        transform: translate(0, -100%) rotate(5deg);
+    }
+}
+
+@keyframes increment {
+    0% {
+        transform: scale3d(1, 1, 1);
+    }
+
+    10%,
+    20% { /* 150ms */
+        transform: scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, -3deg);
+    }
+
+    30%, /* 225ms */
+    50%,
+    70%,
+    90% {
+        transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
+    }
+
+    40%,
+    60%,
+    80% {
+        transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
+    }
+
+    100% { /* 750ms */
+        transform: scale3d(1, 1, 1);
+    }
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    flex-grow: 1;
+    margin: 0;
+}
+
+html {
+    background-color: rgb(0 0 0);
+    color: rgb(255 255 255);
+    display: flex;
+    font-family: 'SF Compact Rounded', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    font-size: 100%;
+    min-height: 100%;
+}
+
+main {
+    cursor: default;
+    display: flex;
+    flex-grow: 1;
+}
+
+.idle {
+    cursor: none;
+}
+
+.marquee {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    gap: min(0.2vw, 0.4vh);
+    font-size: min(10vw, 20vh);
+    font-weight: 500;
+    width: auto;
+    z-index: 200;
+}
+
+.marquee__letter {
+    animation-direction: normal;
+    animation-duration: 3s;
+    animation-fill-mode: both;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in-out;
+    transform: translate(0, -100%) rotate(5deg);
+}
+
+.goal .marquee__letter {
+    animation-name: marquee;
+}
+
+.marquee__letter:nth-child(1)  { animation-delay: 0.0s }
+.marquee__letter:nth-child(2)  { animation-delay: 0.1s }
+.marquee__letter:nth-child(3)  { animation-delay: 0.2s }
+.marquee__letter:nth-child(4)  { animation-delay: 0.3s }
+.marquee__letter:nth-child(5)  { animation-delay: 0.4s }
+.marquee__letter:nth-child(6)  { animation-delay: 0.5s }
+.marquee__letter:nth-child(7)  { animation-delay: 0.6s }
+.marquee__letter:nth-child(8)  { animation-delay: 0.7s }
+.marquee__letter:nth-child(9)  { animation-delay: 0.8s }
+.marquee__letter:nth-child(10) { animation-delay: 0.9s }
+
+.points {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    flex-grow: 1;
+    justify-content: center;
+}
+
+.points::before,
+.points::after {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    background-size: 450px 144px;
+    content: '';
+    opacity: 0;
+    transition-delay: 150ms;
+    transition-duration: 50ms;
+    transition-property: opacity;
+    width: auto;
+    height: auto;
+    z-index: 100;
+}
+
+.points::before {
+    right: 50%;
+    left: 0;
+    background-color: rgb(var(--color-team-blue));
+    box-shadow: 0 0 32px rgb(var(--color-team-blue) / 0.2), 0 0 96px rgb(var(--color-team-blue) / 0.2);
+}
+
+.points::after {
+    right: 0;
+    left: 50%;
+    background-color: rgb(var(--color-team-red));
+    box-shadow: 0 0 32px rgb(var(--color-team-red) / 0.2), 0 0 96px rgb(var(--color-team-red) / 0.2);
+}
+
+.points__team,
+.points__versus {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-basis: 0;
+}
+
+.points__team {
+    position: relative;
+    animation-delay: 0;
+    animation-direction: normal;
+    animation-duration: 750ms;
+    animation-fill-mode: both;
+    animation-iteration-count: 1;
+    animation-timing-function: linear;
+    flex-grow: 1;
+    font-size: min(40vw, 60vh);
+    padding-inline: 5vw;
+    text-shadow: 0 0 32px rgb(0 0 0), 0 0 96px rgb(0 0 0);
+    transition-delay: 150ms;
+    transition-duration: 50ms;
+    transition-property: color, text-shadow;
+    z-index: 300;
+}
+
+.points__team:first-child {
+    justify-content: flex-end;
+    transform-origin: center right;
+}
+
+.points__team:last-child {
+    justify-content: flex-start;
+    transform-origin: center left;
+}
+
+.points__versus {
+    color: rgb(255 255 255 / 0.8);
+    font-size: min(10vw, 20vh);
+    font-weight: 100;
+    z-index: 400;
+}
+
+.goal--blue {
+    --color-score: var(--color-team-blue);
+}
+
+.goal--red {
+    --color-score: var(--color-team-red);
+}
+
+.points__team--blue {
+    color: rgb(var(--color-team-blue));
+}
+
+.points__team--red {
+    color: rgb(var(--color-team-red));
+}
+
+.goal--blue .points__team--blue,
+.goal--red .points__team--red {
+    animation-name: increment;
+}
+
+.win--blue .points::before {
+    opacity: 1;
+}
+
+.win--blue .points__team--blue {
+    color: rgb(255 255 255);
+    text-shadow: 0 0 32px rgb(255 255 255 / 0.2), 0 0 96px rgb(255 255 255 / 0.2);
+}
+
+.win--red .points::after {
+    opacity: 1;
+}
+
+.win--red .points__team--red {
+    color: rgb(255 255 255);
+    text-shadow: 0 0 32px rgb(255 255 255 / 0.2), 0 0 96px rgb(255 255 255 / 0.2);
+}
+
+.tools {
+    position: absolute;
+    right: 19%;
+    bottom: 10px;
+    left: 19%;
+    display: flex;
+    gap: 10px;
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    width: auto;
+    z-index: 400;
+}
+
+.tools__button {
+    position: relative;
+    background-color: transparent;
+    border: 2px solid;
+    border-radius: 18px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 16px;
+    opacity: 0.75;
+    padding: 0;
+    text-transform: uppercase;
+    transition: opacity 100ms;
+    width: 48px;
+    height: 48px;
+}
+
+.tools__button:active {
+    top: 1px;
+}
+
+.tools__button:disabled {
+    border-style: dotted;
+    color: inherit;
+    cursor: wait;
+    opacity: 0.5;
+}
+
+.tools__button:hover:not(:disabled) {
+    opacity: 1;
+}
+
+.tools__button:nth-child(even) {
+    margin-right: auto;
+}
+
+.tools__button:nth-child(odd) {
+    margin-left: auto;
+}
+
+.tools__button--blue {
+    border-color: rgb(var(--color-team-blue));
+}
+
+.tools__button--blue:hover:not(:disabled) {
+    background-color: rgb(var(--color-team-blue) / 0.5);
+}
+
+.tools__button--red {
+    border-color: rgb(var(--color-team-red));
+}
+
+.tools__button--red:hover:not(:disabled) {
+    background-color: rgb(var(--color-team-red) / 0.5);
+}
